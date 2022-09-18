@@ -3,10 +3,17 @@
 
 use std::str::FromStr;
 use crate::error_codes::errors::Errors;
+use crate::states::thread::Thread;
 use crate::states::thread::{MAX_CONTENT_LENGTH, MAX_TOPIC_LENGTH};
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::program_memory::sol_memset;
 use anchor_spl::token::TokenAccount;
+
+#[derive(Accounts)]
+pub struct ThreadExists<'info> {
+    #[account(mut)]
+    pub thread: Account<'info, Thread>
+}
 
 pub fn transfer_sol(from: &mut AccountInfo, to: &mut AccountInfo, amount: u64) -> Result<()> {
     let post_from = from
@@ -95,3 +102,27 @@ pub fn transfer_token<'a>(
     )?;
     Ok(())
 }
+
+/*pub fn check_thread_exists(
+    community: AccountInfo,
+) -> Result<()> {
+    if community.key{
+        return Err(Errors::ThreadsExist.into());
+    }
+    Ok(())
+}*/
+
+/*pub fn check_thread_exists(ctx: Context<ThreadExists>, 
+    communityPk: Pubkey
+) -> Result<()> {
+//pub fn check_thread_exists(communityPk: Pubkey,) -> Result<()> {
+    //let thread= &mut ctx.accounts.thread;
+    let thread = &mut ctx.accounts.thread;
+    let mut iter = thread.community.iter();
+    //let mut iter = thread.community.iter();
+    if iter.any(|&v| v == communityPk) {
+        return Err(Errors::ThreadsExist.into());
+    }
+
+    Ok(())
+}*/
