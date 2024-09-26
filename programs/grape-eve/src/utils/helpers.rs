@@ -3,10 +3,17 @@
 
 use std::str::FromStr;
 use crate::error_codes::errors::Errors;
+use crate::states::thread::Thread;
 use crate::states::thread::{MAX_CONTENT_LENGTH, MAX_TOPIC_LENGTH};
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::program_memory::sol_memset;
 use anchor_spl::token::TokenAccount;
+
+#[derive(Accounts)]
+pub struct ThreadExists<'info> {
+    #[account(mut)]
+    pub thread: Account<'info, Thread>
+}
 
 pub fn transfer_sol(from: &mut AccountInfo, to: &mut AccountInfo, amount: u64) -> Result<()> {
     let post_from = from
